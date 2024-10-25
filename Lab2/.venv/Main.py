@@ -35,34 +35,35 @@ import numpy as np
 #     if cv.waitKey(1) & 0XFF == 27:
 #         break
 # cv.destroyAllWindows()
-# #Задание 4-5
-# cap=cv.VideoCapture(0)
-# width = int(cap.get(cv.CAP_PROP_FRAME_WIDTH))
-# height = int(cap.get(cv.CAP_PROP_FRAME_HEIGHT))
-# kernel=np.zeros((5,5),np.uint8)
-# kernel[5 // 2, :] = 1
-# kernel[:, 5 // 2] = 1
-# while True:
-#     ok, img = cap.read()
-#     if not(ok):
-#         break
-#     hsv=cv.cvtColor(img,cv.COLOR_BGR2HSV)
-#     out=cv.inRange(hsv,(0,120,155),(30,255,255))
-#     opened=cv.morphologyEx(out,cv.MORPH_OPEN,kernel)
-#     moments=cv.moments(opened)
-#     h,s,v=hsv[int(width/2),int(height//2)]
-#     print(f"h:{h},s:{s},v:{v}")
-#     if(moments["m00"]!=0):
-#         print(f"S: {moments['m00']}")
-#         print(f"Моменты 1 порядка: {moments['m01']}, {moments['m10']}")
-#         xc=int(moments['m10']/moments['m00'])
-#         yc=int(moments['m01']/moments['m00'])
-#         (contours, _) = cv.findContours(opened.copy(), cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
-#         for countour in contours:
-#             (x, y, w, h) = cv.boundingRect(countour)
-#             cv.rectangle(img, (x, y), (x + w, y + h), (0, 0, 0), 4)
-#             cv.rectangle(img,(xc-2,yc-2),(xc+2,yc+2),(255,255,255),2)
-#     cv.imshow('Detecting red',img)
-#     if cv.waitKey(1) & 0XFF == 27:
-#         break
-# cv.destroyAllWindows()
+#Задание 4-5
+cap=cv.VideoCapture(0)
+width = int(cap.get(cv.CAP_PROP_FRAME_WIDTH))
+height = int(cap.get(cv.CAP_PROP_FRAME_HEIGHT))
+kernel=np.zeros((5,5),np.uint8)
+kernel[5 // 2, :] = 1
+kernel[:, 5 // 2] = 1
+while True:
+    ok, img = cap.read()
+    if not(ok):
+        break
+    hsv=cv.cvtColor(img,cv.COLOR_BGR2HSV)
+    out=cv.inRange(hsv,(0,120,155),(30,255,255))
+    opened=cv.morphologyEx(out,cv.MORPH_OPEN,kernel)
+    moments=cv.moments(opened)
+    h,s,v=hsv[int(width/2),int(height//2)]
+    print(f"h:{h},s:{s},v:{v}")
+    if(moments["m00"]!=0):
+        print(f"S: {moments['m00']}")
+        print(f"Моменты 1 порядка: {moments['m01']}, {moments['m10']}")
+        xc=int(moments['m10']/moments['m00'])
+        yc=int(moments['m01']/moments['m00'])
+        x, y, w, h = cv2.boundingRect(out)
+        # Рисуем прямоугольник на изображении
+        cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
+
+        # Рисуем центр массы
+        cv2.circle(img, (xc, yc), 5, (255, 0, 0), -1)
+    cv.imshow('Detecting red',img)
+    if cv.waitKey(1) & 0XFF == 27:
+        break
+cv.destroyAllWindows()
