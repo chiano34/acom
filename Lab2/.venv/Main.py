@@ -58,11 +58,7 @@ while True:
         xc=int(moments['m10']/moments['m00'])
         yc=int(moments['m01']/moments['m00'])
         x, y, w, h = cv2.boundingRect(out)
-        # Рисуем прямоугольник на изображении
         cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
-
-        # Рисуем центр массы
-        cv2.circle(img, (xc, yc), 5, (255, 0, 0), -1)
     cv.imshow('Detecting red',img)
     if cv.waitKey(1) & 0XFF == 27:
         break
